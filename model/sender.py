@@ -12,6 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import time
 import sys
+from random import choice
 
 class sender():
 
@@ -131,4 +132,6 @@ class WA_sender(sender):
 
 
 if __name__ =="__main__":
-    print(sys.argv)
+    random_cheatsheet = choice(sys.argv[1])
+    contact = sys.argv[2]
+
