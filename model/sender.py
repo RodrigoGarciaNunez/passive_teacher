@@ -13,10 +13,12 @@ import os
 import time
 import sys
 from random import choice
+from json import JSONDecodeError, loads
+import pandas as pd
 
 class sender():
 
-    def __init__(self, directory:dict, message:str):
+    def __init__(self, directory:dict, message:str, file:str):
 
         self.dir = directory
         self.mensaje = message
@@ -29,14 +31,16 @@ class sender():
 
         
 
-        self.file = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "../test_resourses", "mc.jpg"))
+        # self.file = os.path.abspath(
+        #     os.path.join(os.path.dirname(__file__), "../test_resourses", "mc.jpg"))
 
-        print(self.file)
+        #print(self.file)
 
 
-        def send_Message():
+        def send_Message(self):
             pass
+            
+       
 
 
 
@@ -57,7 +61,7 @@ class WA_sender(sender):
             exit()
 
 
-    def send_Message(self, message:str, file:str):
+    def send_Message(self):
         #mensaje = "Hola!"
         
         for contacto in self.dir:
@@ -71,14 +75,17 @@ class WA_sender(sender):
 
     
     def find_contact(self, contacto):
-        
-        search_box = WebDriverWait(self.driver, 30).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='3']")))
-            
-        search_box.click()
-        search_box.send_keys(self.dir[contacto][1])
-        time.sleep(2)
-        search_box.send_keys(Keys.ENTER)
+        try:
+            print(contacto)
+            search_box = WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='3']")))
+                
+            search_box.click()
+            search_box.send_keys(self.dir[contacto][1])
+            time.sleep(2)
+            search_box.send_keys(Keys.ENTER)
+        except Exception as e:
+            print("algo salio mal buscando el contacto")
 
 
 
@@ -131,7 +138,35 @@ class WA_sender(sender):
         send_btn.click()
 
 
+
+
 if __name__ =="__main__":
-    random_cheatsheet = choice(sys.argv[1])
+    print('---------ENVIANDO MENSAJE ---------')
+    random_cheatsheet =loads(sys.argv[1])
+    random_cheatsheet = choice(random_cheatsheet)
+    print('file' ,type(random_cheatsheet), random_cheatsheet)
+    
     contact = sys.argv[2]
+    #contact = cleans_json(contact)
+    print('directorio',contact)
+
+    if type(contact) is int():
+        print('soy int')
+    
+    try: 
+        contact = loads(contact)
+        print('contacto parseado', type(contact), contact)
+    except JSONDecodeError as e:
+        print(e, "Error al parsear directorio")
+
+
+    snd = WA_sender(contact, "Esto es una prueba", random_cheatsheet)
+    snd.send_Message()
+
+
+    
+
+
+  
+
 

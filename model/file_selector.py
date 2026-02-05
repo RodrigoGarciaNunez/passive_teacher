@@ -47,5 +47,4 @@ if __name__ == "__main__":
     fs = file_selector()
     selected_dir = fs.select_cheat_sheet()
     selected_dir = selected_dir.tolist()
-
     json.dump(selected_dir, sys.stdout)
