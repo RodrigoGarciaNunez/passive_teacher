@@ -22,6 +22,7 @@ class sender():
 
         self.dir = directory
         self.mensaje = message
+        self.file = file
 
         options = Options()
         options.binary_location = "/usr/bin/brave-browser"
@@ -55,6 +56,7 @@ class WA_sender(sender):
             WebDriverWait(self.driver, 300).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, "div[role='grid']")))
             print("✅ Sesión iniciada correctamente.")
+            time.sleep(5)
         except:
             print("⏰ Tiempo de espera agotado. No se detectó el inicio de sesión.")
             self.driver.quit()
@@ -64,9 +66,9 @@ class WA_sender(sender):
     def send_Message(self):
         #mensaje = "Hola!"
         
-        for contacto in self.dir:
-            self.find_contact(contacto)
-            self.add_message(contacto)
+        for contacto, num in zip(self.dir['ID'].values(),self.dir['TELEFONO'].values()):
+            self.find_contact(num)
+            self.add_message(contacto, num)
             self.add_file()
         
         # cierra sesión
@@ -74,22 +76,23 @@ class WA_sender(sender):
 
 
     
-    def find_contact(self, contacto):
+    def find_contact(self,num):
         try:
-            print(contacto)
+            #print(contacto)
             search_box = WebDriverWait(self.driver, 30).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='3']")))
                 
             search_box.click()
-            search_box.send_keys(self.dir[contacto][1])
+            print(num)
+            search_box.send_keys(num)
             time.sleep(2)
             search_box.send_keys(Keys.ENTER)
         except Exception as e:
-            print("algo salio mal buscando el contacto")
+            print("algo salio mal buscando el contacto", e)
 
 
 
-    def add_message(self, contacto):
+    def add_message(self, contacto, num):
 
         if self.mensaje == "":
             return
@@ -101,7 +104,7 @@ class WA_sender(sender):
         msg_box.send_keys(self.mensaje)
         msg_box.send_keys(Keys.ENTER)
 
-        print(f"✅ Mensaje enviado a {contacto}: {dir[contacto][1]}.")
+        print(f"✅ Mensaje enviado a {contacto}: {num}.")
         time.sleep(3)
 
     def add_file(self):
@@ -118,7 +121,7 @@ class WA_sender(sender):
             # 2️⃣ Localizar el input file
 
         file_input = WebDriverWait(self.driver, 30).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='*']")))
 
             # file_input = wait.until(EC.presence_of_element_located(
             #     (By.CSS_SELECTOR, "input[type='file']")
@@ -131,6 +134,8 @@ class WA_sender(sender):
 
         send_btn = WebDriverWait(self.driver, 30).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-icon='wds-ic-send-filled']" )))
+        
+        time.sleep(10)
 
             # send_btn = wait.until(EC.element_to_be_clickable(
             #     (By.CSS_SELECTOR, "span[data-icon='send']")
@@ -159,7 +164,10 @@ if __name__ =="__main__":
     except JSONDecodeError as e:
         print(e, "Error al parsear directorio")
 
+    #print(contact['TELEFONO']['1'])
 
+    # for cont in contact['TELEFONO'].values():
+    #     print(cont,'va una') 
     snd = WA_sender(contact, "Esto es una prueba", random_cheatsheet)
     snd.send_Message()
 
