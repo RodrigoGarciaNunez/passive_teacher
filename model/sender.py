@@ -17,13 +17,19 @@ from json import JSONDecodeError, loads
 import pandas as pd
 from dataclasses import dataclass
 
+import fitz # PyMuPDF
+from PIL import Image
+from pdf2jpeg_merger import merger
+
+
+
 @dataclass
 class WA_selectors():
     session_init_selector = "div[role='grid']"
     contact_search_box_selector= "div[contenteditable='true'][data-tab='3']"
     msg_box_selector = "div[contenteditable='true'][data-tab='10'][role='textbox']"
     clip_btn_selector = "span[data-icon='plus-rounded']"
-    file_input_selector = "input[type='file\']"
+    file_input_selector = "input[type='file']"
     send__file_btn_selector = "span[data-icon='wds-ic-send-filled']" 
 
 
@@ -54,6 +60,51 @@ class sender():
         def send_Message(self):
             pass
             
+        
+        # def converts_pdf2jpg(self):
+
+        #     file = fitz.open(self.file)
+        #     images = []             
+        #     for page_num in range(len(file)):
+        #         page = file.load_page(page_num)
+
+        #         #renderiza la pagina a un mapa de pixeles
+
+        #         pixmap = page.get_pixmap(dpi=150)
+
+        #         output_image_file = os.path.join('temp_files', f'page_{page_num+1}.jpg')
+
+        #         images.append(output_image_file)
+
+        #         pixmap.save(output_image_file,'jpeg' )
+
+
+        #     file.close()
+            
+            
+        #     images_to_merge = [Image.open(img) for img in images]
+
+        #     max_width = max(img.width for img in images_to_merge)
+        #     total_height = sum(img.height for img in images_to_merge)
+
+        #     merged_image = Image.new('RGB', (max_width, total_height))
+
+
+        #     y_offset = 0
+        #     for img in images_to_merge:
+        #         merged_image.paste(img, (0, y_offset))
+        #         y_offset += img.height
+
+        #     # Save the result
+        #     merged_image.save('temp_files/merged_cs.jpg')
+
+
+
+ 
+
+
+
+
        
 
 
@@ -130,7 +181,7 @@ class WA_sender(sender):
         
         if self.file == "":
             return
-        
+    
         try:
 
                 # 1 Abrir el botón del clip
@@ -173,6 +224,9 @@ if __name__ =="__main__":
     random_cheatsheet = choice(random_cheatsheet)
     print('file' ,type(random_cheatsheet), random_cheatsheet)
     
+    mrg = merger(random_cheatsheet)
+    random_cheatsheet = mrg.converts_pdf2jpg()
+
     contact = sys.argv[2]
     #contact = cleans_json(contact)
     print('directorio',contact)
