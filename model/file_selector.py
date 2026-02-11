@@ -18,16 +18,25 @@ class file_selector():
         dir = np.array([x.path for x in dir])
 
 
-        pattern_to_exclude= re.compile(r'^[A-Za-z]*\.[A-Za-z]+$')
+        pattern_to_exclude= re.compile(r'^.*/\.[^/]+/?$') #excluye directorios con formato '.loquesea' y/o archivos
 
         dir = self.exclude_files_dirs(dir, pattern_to_exclude)
 
         #print(dir)
 
 
-        selected_dir = choice(dir) 
-        # selected_dir = selected_dir if len([x for x in os.scandir(selected_dir)]) >0 else choice(dir)
         
+
+        
+        while True:
+            selected_dir = choice(dir)
+            #print(selected_dir)
+            scanned_dir = os.scandir(selected_dir)
+            scanned_dir = np.array([x.path for x in scanned_dir])
+            #print(len(scanned_dir))
+            if len(scanned_dir)>0:
+                break
+
  
         CHEATS_in_dir = np.array([x.path for x in os.scandir(selected_dir)])
         

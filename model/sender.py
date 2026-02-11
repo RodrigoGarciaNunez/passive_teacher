@@ -15,6 +15,19 @@ import sys
 from random import choice
 from json import JSONDecodeError, loads
 import pandas as pd
+from dataclasses import dataclass
+
+@dataclass
+class WA_selectors():
+    session_init_selector = "div[role='grid']"
+    contact_search_box_selector= "div[contenteditable='true'][data-tab='3']"
+    msg_box_selector = "div[contenteditable='true'][data-tab='10'][role='textbox']"
+    clip_btn_selector = "span[data-icon='plus-rounded']"
+    file_input_selector = "input[type='file\']"
+    send__file_btn_selector = "span[data-icon='wds-ic-send-filled']" 
+
+
+
 
 class sender():
 
@@ -54,7 +67,7 @@ class WA_sender(sender):
 
         try:
             WebDriverWait(self.driver, 300).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "div[role='grid']")))
+                EC.presence_of_element_located((By.CSS_SELECTOR, WA_selectors.session_init_selector)))
             print("✅ Sesión iniciada correctamente.")
             time.sleep(5)
         except:
@@ -80,10 +93,10 @@ class WA_sender(sender):
         try:
             #print(contacto)
             search_box = WebDriverWait(self.driver, 30).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='3']")))
+                EC.presence_of_element_located((By.CSS_SELECTOR, WA_selectors.contact_search_box_selector)))
                 
             search_box.click()
-            print(num)
+            #print(num)
             search_box.send_keys(num)
             time.sleep(2)
             search_box.send_keys(Keys.ENTER)
@@ -96,51 +109,60 @@ class WA_sender(sender):
 
         if self.mensaje == "":
             return
-        
-        msg_box = WebDriverWait(self.driver, 30).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div[contenteditable='true'][data-tab='10'][role='textbox']")))
-            
-        msg_box.click()
-        msg_box.send_keys(self.mensaje)
-        msg_box.send_keys(Keys.ENTER)
 
-        print(f"✅ Mensaje enviado a {contacto}: {num}.")
+        try: 
+
+            msg_box = WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, WA_selectors.msg_box_selector)))
+                
+            msg_box.click()
+            msg_box.send_keys(self.mensaje)
+            msg_box.send_keys(Keys.ENTER)
+
+            print(f"\n✅ Mensaje enviado a {contacto}: {num}.")
+        except Exception as e:
+            print(e, "\n NO SE PUDO ENVIAR EL MENSAJE")
+            exit()
+
         time.sleep(3)
 
     def add_file(self):
         
         if self.file == "":
             return
-
-            # 1️⃣ Abrir el botón del clip
-        clip_btn = WebDriverWait(self.driver, 30).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-icon='plus-rounded']" )))
-    
-        clip_btn.click()
-
-            # 2️⃣ Localizar el input file
-
-        file_input = WebDriverWait(self.driver, 30).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='*']")))
-
-            # file_input = wait.until(EC.presence_of_element_located(
-            #     (By.CSS_SELECTOR, "input[type='file']")
-            # ))
-
-            # 3️⃣ Enviar la ruta del archivo (ABSOLUTA)
-        file_input.send_keys(self.file)
-
-            # 4️⃣ Esperar botón de enviar y hacer click
-
-        send_btn = WebDriverWait(self.driver, 30).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "span[data-icon='wds-ic-send-filled']" )))
         
-        time.sleep(10)
+        try:
 
-            # send_btn = wait.until(EC.element_to_be_clickable(
-            #     (By.CSS_SELECTOR, "span[data-icon='send']")
-            # ))
-        send_btn.click()
+                # 1 Abrir el botón del clip
+            clip_btn = WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, WA_selectors.clip_btn_selector)))
+        
+            clip_btn.click()
+
+                # 2 Localizar el input file
+
+            file_input = WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, WA_selectors.file_input_selector)))
+
+            
+
+                # 3 Enviar la ruta del archivo (ABSOLUTA)
+            file_input.send_keys(self.file)
+
+                # 4 Esperar botón de enviar y hacer click
+
+            send_btn = WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, WA_selectors.send__file_btn_selector)))
+            
+            time.sleep(2)
+
+            send_btn.click()
+
+            print("✅ Archivo enviado!")
+        
+        except Exception as e:
+            print(e, "NO SE PUDO ENVIAR EL ARCHIVO")
+            exit()
 
 
 
