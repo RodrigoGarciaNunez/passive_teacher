@@ -46,7 +46,7 @@ class file_selector():
 
         #print(CHEATS_in_dir)
 
-        return CHEATS_in_dir
+        return choice(CHEATS_in_dir)
 
 
     def exclude_files_dirs(self, dir ,pattern_to_exclude):

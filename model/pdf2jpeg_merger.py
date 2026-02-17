@@ -43,7 +43,7 @@ class merger:
 
         # Save the result
         merged_image_name = 'temp_files/merged_cs.jpg'
-        merged_image.save(merged_image_name)
+        merged_image.save(merged_image_name, 'jpeg', quality=200)
 
 
         return os.path.abspath(merged_image_name)

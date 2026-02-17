@@ -2,7 +2,7 @@
 
 set -e  # aborta ante errores (opcional pero recomendado)
 
-TARGET_HOUR=15
+TARGET_HOUR=7
 TARGET_MIN=30
 SENT_TODAY=1
 CONTACT_DIR=""
