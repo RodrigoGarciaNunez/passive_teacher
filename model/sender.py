@@ -6,6 +6,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -19,7 +21,7 @@ from dataclasses import dataclass
 
 import fitz # PyMuPDF
 from PIL import Image
-from pdf2jpeg_merger import merger
+from image_manager import image_manager
 
 
 
@@ -49,7 +51,7 @@ class sender():
 
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager(driver_version="143.0.7499.110").install()), options=options)
 
-        
+        self.image_manager = image_manager()        
 
         # self.file = os.path.abspath(
         #     os.path.join(os.path.dirname(__file__), "../test_resourses", "mc.jpg"))
@@ -60,7 +62,6 @@ class sender():
         def send_Message(self):
             pass
         
-
 
 
 class WA_sender(sender):
@@ -87,7 +88,7 @@ class WA_sender(sender):
         for contacto, num in zip(self.dir['ID'].values(),self.dir['TELEFONO'].values()):
             self.find_contact(num)
             self.add_message(contacto, num)
-            self.add_file()
+            self.add_file_copied()
         
         # cierra sesión
         self.driver.quit()
@@ -170,6 +171,38 @@ class WA_sender(sender):
             exit()
 
 
+    def add_file_copied(self):
+        
+        try:
+            
+            msg_box = WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, WA_selectors.msg_box_selector)))
+                
+            msg_box.click()
+
+            image_2_copy = self.image_manager.converts_pdf2jpg(self.file)
+            self.image_manager.copy_image_2_clipboard(image_2_copy)
+            
+            # ctrl + v 
+            #ActionChains(self.driver).key_down(Keys.CONTROL).send_keys('v').key_up(Keys.CONTROL).perform()
+
+            msg_box.send_keys(Keys.CONTROL, 'v')
+
+
+            send_btn = WebDriverWait(self.driver, 30).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, WA_selectors.send__file_btn_selector)))
+            
+            time.sleep(2)
+
+            send_btn.click()
+            #msg_box.send_keys(Keys.ENTER)
+
+            print(f"\n✅ Imágen enviada")
+
+
+        except Exception as e:
+            print(e, 'No se pudo copiar la imágen')
+
 
 
 if __name__ =="__main__":
@@ -178,8 +211,8 @@ if __name__ =="__main__":
     #random_cheatsheet = choice(random_cheatsheet)
     print('file' ,type(random_cheatsheet), random_cheatsheet)
     
-    mrg = merger(random_cheatsheet)
-    random_cheatsheet = mrg.converts_pdf2jpg()
+    #mrg = image_manager(random_cheatsheet)
+    #random_cheatsheet = converts_pdf2jpg(random_cheatsheet)
 
     contact = sys.argv[2]
     #contact = cleans_json(contact)

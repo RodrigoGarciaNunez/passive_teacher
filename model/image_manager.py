@@ -1,16 +1,16 @@
 import fitz
-from PIL import Image
+from PIL import Image, ImageGrab
 import os
+import subprocess
 
 
+class image_manager:
+    def __init__(self):
+        pass
 
-class merger:
-    def __init__(self, file):
-        self.file  = file
+    def converts_pdf2jpg(self, file):
 
-    def converts_pdf2jpg(self):
-
-        file = fitz.open(self.file)
+        file = fitz.open(file)
         images = []             
         for page_num in range(len(file)):
             page = file.load_page(page_num)
@@ -47,6 +47,19 @@ class merger:
 
 
         return os.path.abspath(merged_image_name)
+    
+
+    def copy_image_2_clipboard(self, image_path):
+        # img = ImageGrab.grabclipboard()  # This gets the image from clipboard
+
+        # img.save(image_path, 'PNG')  
+
+        # if img is None:
+        #     print("No image found in clipboard.")
+        
+        subprocess.run([ 'xclip', '-selection', 'clipboard', '-target', 'image/png', '-i', image_path])  #it works
+
+        return
 
 
 if __name__=='__main__':
@@ -54,6 +67,6 @@ if __name__=='__main__':
 
     file = sys.argv[1]
     print(file)
-    mrg = merger(file)
-    returned  = mrg.converts_pdf2jpg()
+    mrg = image_manager()
+    returned  = mrg.converts_pdf2jpg(file)
     print(returned)
