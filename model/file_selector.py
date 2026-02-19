@@ -1,4 +1,3 @@
-import subprocess
 import os
 import re
 import numpy as np

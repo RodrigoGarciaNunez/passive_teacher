@@ -195,6 +195,8 @@ class WA_sender(sender):
             time.sleep(2)
 
             send_btn.click()
+
+            time.sleep(7)
             #msg_box.send_keys(Keys.ENTER)
 
             print(f"\n✅ Imágen enviada")
