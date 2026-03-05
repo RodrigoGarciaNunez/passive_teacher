@@ -5,7 +5,7 @@ from random import choice
 import sys
 import json
 import requests
-import pandas as pd
+
 
 
 
@@ -16,7 +16,7 @@ class file_selector():
     # def select_cheat_sheet(self):
 
      
-    #     path = 
+    #     path = ""
 
     #     dir = os.scandir(path)
     #     dir = np.array([x.path for x in dir])

@@ -1,0 +1,36 @@
+#dev
+services:
+  passive_teacher:
+    build:
+      #context: contextPath
+      dockerfile: .dockerfile
+    container_name: passive_teacher
+    ports:
+      - 8080:80
+    volumes: 
+      - ${APP_DIR}:/app
+    depends_on:
+      - files_container
+    networks:
+      - app_network
+      - file_container_network
+
+  files_container:
+    image: nginx:latest
+    container_name: files_container
+    ports:
+      - 1022:1022
+    volumes:
+      - ${FILES_DIR}:/cheatsheets
+    networks:
+      - file_container_network
+
+networks:
+  file_container_network:
+    driver: bridge
+  app_network:
+    driver: bridge
+
+
+
+
