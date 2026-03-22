@@ -17,11 +17,12 @@ services:
 
   files_container:
     image: nginx:latest
+      
     container_name: files_container
     ports:
       - 1022:1022
     volumes:
-      - ${FILES_DIR}:/cheatsheets
+      - ${FILES_DIR}:/usr/share/nginx/html
     networks:
       - file_container_network
 

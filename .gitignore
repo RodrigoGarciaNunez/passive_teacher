@@ -1,3 +1,4 @@
 test_resouces
 temp_files
-.env
+*.env
+*.code-workspace
