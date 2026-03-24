@@ -3,4 +3,4 @@ temp_files
 *.env
 *.code-workspace
 
-*/__pycache__/*
+*/__pycache__

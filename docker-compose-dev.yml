@@ -3,12 +3,17 @@ services:
   passive_teacher:
     build:
       #context: contextPath
-      dockerfile: .dockerfile
-    container_name: passive_teacher
+      dockerfile: dev.dockerfile
+    container_name: passive_teacher_app
+    #command: ["executable", "arg"]
     ports:
-      - 8080:80
+      - 8050:8080
     volumes: 
-      - ${APP_DIR}:/app
+      - ${APP_DIR}:/app/passive_teacher
+    #working_dir:
+    # command: tail
+    #  -f /dev/null 
+    command: ["python3", "-m", "controller.main"]
     depends_on:
       - files_container
     networks:
@@ -17,14 +22,16 @@ services:
 
   files_container:
     image: nginx:latest
-      
     container_name: files_container
     ports:
-      - 1022:1022
+      - 8080:80
     volumes:
       - ${FILES_DIR}:/usr/share/nginx/html
+      - ${FILES_DIR}/nginx.conf:/etc/nginx/conf.d/default.conf 
+
     networks:
       - file_container_network
+      - app_network
 
 networks:
   file_container_network:

@@ -2,3 +2,4 @@ pillow
 pandas
 selenium
 numpy
+flask

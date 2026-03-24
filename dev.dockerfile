@@ -21,7 +21,7 @@ RUN useradd -m appuser
 USER appuser
 
 # # install app
-# COPY . /app/passive_teacher
+#COPY . /app/passive_teacher
 WORKDIR /app/passive_teacher
 # USER root
 # RUN chmod +x passive_teacher.sh
@@ -32,5 +32,5 @@ WORKDIR /app/passive_teacher
 # #final configuration
 
 # ENV FLASK_APP=hello
-# EXPOSE 8000
-CMD ["./passive_teacher.sh", "-d", "test_resouces/test_dir.xlsx"]
+EXPOSE 8050
+CMD ["tail","-f","/dev/null"]

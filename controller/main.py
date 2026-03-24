@@ -1,9 +1,9 @@
 #from model.passive_teacher import passive_teacher
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from markupsafe import escape  # esto sirve para evitar inyecciones
 
 
-
+#hola
 app = Flask(__name__, template_folder="../view")
 
 @app.route("/")
@@ -18,8 +18,9 @@ def sign_in():
 
 @app.route("/directory")
 def directory():
-    pass
+    return return redirect("/files /")
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8090, debug=True)   
+    print("hola")
+    app.run(host='0.0.0.0', port=8080, debug=True)   
