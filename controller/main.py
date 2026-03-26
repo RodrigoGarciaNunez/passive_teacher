@@ -18,7 +18,7 @@ def sign_in():
 
 @app.route("/directory")
 def directory():
-    return return redirect("/files /")
+    return redirect("/files/")
 
 
 if __name__ == '__main__':
