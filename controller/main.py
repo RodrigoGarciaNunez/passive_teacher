@@ -1,10 +1,13 @@
 #from model.passive_teacher import passive_teacher
 from flask import Flask, request, render_template, redirect
 from markupsafe import escape  # esto sirve para evitar inyecciones
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 
 
 #hola
 app = Flask(__name__, template_folder="../view")
+app.wsgi_app = ProxyFix(app.wsgi_app, x_prefix=1)
 
 @app.route("/")
 @app.route("/<name>")
@@ -18,7 +21,7 @@ def sign_in():
 
 @app.route("/directory")
 def directory():
-    return redirect("/files/")
+    return redirect("/files_container/python/python_cs.pdf")
 
 
 if __name__ == '__main__':

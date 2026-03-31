@@ -21,18 +21,17 @@ services:
 
 
   files_container:
-    image: alpine:latest
+    image: nginx:alpine
     container_name: files_container
     ports:
       - 8030:80
     volumes:
-      - ${FILES_DIR}:/cheatsheets:ro
-    command: ["tail", "-f", "/dev/null"]
+      - ${FILES_DIR}:/usr/share/nginx/html:ro
+      - ${FILES_DIR}/nginx_files.conf:/etc/nginx/conf.d/default.conf:ro 
     networks:
       - passive_teacher_network
     # depends_on:
     #   - nginx_server
-
 
 
 
