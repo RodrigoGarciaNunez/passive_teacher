@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to Passive_Teacher App!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Library</h1>
+<h2>Select to expand</h2>
+<!--<p>What would you like to do?</p>-->
+
+{% for folder, files in structure.items() %}
+<details>
+    <summary>{{ folder }}</summary>
+
+    {% for file in files %}
+        <div style="margin-left: 20px;">
+            <a href="{{ request.script_root }}/files_container/{{ folder }}/{{ file }}">
+                {{ file }}
+            </a>
+        </div>
+    {% endfor %}
+
+</details>
+{% endfor %}
+
+
+<p><em>Thank you for using Passive Teacher.</em></p>
+</body>
+</html>
