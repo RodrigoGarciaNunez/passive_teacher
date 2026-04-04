@@ -2,7 +2,6 @@
 from flask import Flask, request, render_template, redirect
 from markupsafe import escape  # esto sirve para evitar inyecciones
 from werkzeug.middleware.proxy_fix import ProxyFix
-import os
 import requests
 import sys
 
@@ -26,29 +25,30 @@ def sign_in():
 def biblioteca():
     structure = {}  #diccionario de la biblioteca
 
-    # for folder in os.listdir(BASE_DIR):
-    #     folder_path = os.path.join(BASE_DIR, folder)
+    directorio = requests.get("http://files_container/").json()
+    print(type(directorio))
 
-    #     if os.path.isdir(folder_path):
-    #         files = [f for f in os.listdir(folder_path) 
-    #                  if f.endswith(".pdf") and not f.startswith(".")]
+    for item in directorio:
+        if item["type"] == "directory":
+            sub_dir = item["name"]
+
+            sub_dir_content = requests.get(f"http://files_container/{sub_dir}").json()
+            files = [file["name"] for file in sub_dir_content 
+                     if file["type"] == "file" and file["name"].endswith(".pdf")]
             
-    #         structure[folder] = files
+            structure[sub_dir]=files
 
-    # print("holaaa")
-    directorio = requests.get("http://files_container/")
-    # print(directorio)
     # sys.stdout.flush()
 
-    print(directorio.status_code)
-    print(directorio.headers)
-    print(directorio.text)
-
+    print(structure)
     sys.stdout.flush()
 
     return render_template("biblioteca.html", structure=structure)
 
 
+@app.route("/get_file/<folder>/<file>")
+def get_file(folder, file):
+    return redirect(f"/files_container/{folder}/{file}")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)   

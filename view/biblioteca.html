@@ -19,9 +19,9 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 
     {% for file in files %}
         <div style="margin-left: 20px;">
-            <a href="{{ request.script_root }}/files_container/{{ folder }}/{{ file }}">
-                {{ file }}
-            </a>
+            <form action="{{ url_for('get_file', folder=folder, file=file) }}" method="get">
+                <button type="submit">{{ file }}</button>
+            </form>
         </div>
     {% endfor %}
 
