@@ -2,7 +2,7 @@
 
 FROM nginx:latest
 
-COPY . /CHEATSHEETS
+COPY ${{CHEATSHEETS_DIR}} /CHEATSHEETS
 
 
 

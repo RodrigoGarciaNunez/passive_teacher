@@ -12,9 +12,10 @@ RUN  apt-get update && apt-get install -y python3 python3-pip \
     #snap install astral-uv --classic   
 
 
-COPY requirements.txt /
+COPY ${ENV_FILE} / 
 
-RUN pip install --no-cache-dir -r requirements.txt --break-system-packages
+
+RUN pip install --no-cache-dir -r  --break-system-packages
 
 
 RUN useradd -m appuser
@@ -33,4 +34,4 @@ WORKDIR /app/passive_teacher
 
 # ENV FLASK_APP=hello
 EXPOSE 8050
-CMD ["tail","-f","/dev/null"]
+#CMD ["tail","-f","/dev/null"]

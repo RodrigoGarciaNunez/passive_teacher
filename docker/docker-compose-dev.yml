@@ -3,13 +3,13 @@ services:
   passive_teacher:
     build:
       #context: contextPath
-      dockerfile: dev.dockerfile
+      dockerfile: passive_teacher_app_dev.dockerfile
     container_name: passive_teacher_app
     #command: ["executable", "arg"]
     ports:
       - 8050:8080
     volumes: 
-      - ${APP_DIR}:/app/passive_teacher
+      - ${APP_MAIN_DIR}:/app/passive_teacher
     #working_dir:
     # command: tail
     #  -f /dev/null 
@@ -26,7 +26,7 @@ services:
     ports:
       - 8030:80
     volumes:
-      - ${FILES_DIR}:/usr/share/nginx/html:ro
+      - ${CHEATSHEETS_DIR}:/usr/share/nginx/html:ro
       - ${NGINX_CONFIG_FILES_CONTAINER}:/etc/nginx/conf.d/default.conf:ro 
     networks:
       - passive_teacher_network
