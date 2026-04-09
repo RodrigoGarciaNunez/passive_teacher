@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
 
 FROM ubuntu:25.10
-
+ARG ENV_FILE
+ARG APP_MAIN_DIR
 
 
 # install app dependencies
@@ -12,17 +13,17 @@ RUN  apt-get update && apt-get install -y python3 python3-pip \
     #snap install astral-uv --classic   
 
 
-COPY ${ENV_FILE} / 
+COPY ./requirements.txt / 
 
 
-RUN pip install --no-cache-dir -r  --break-system-packages
+RUN pip install --no-cache-dir -r requirements.txt  --break-system-packages
 
 
 RUN useradd -m appuser
 USER appuser
 
 # # install app
-#COPY . /app/passive_teacher
+COPY ./src /app/passive_teacher
 WORKDIR /app/passive_teacher
 # USER root
 # RUN chmod +x passive_teacher.sh
@@ -32,6 +33,6 @@ WORKDIR /app/passive_teacher
 
 # #final configuration
 
-# ENV FLASK_APP=hello
+
 EXPOSE 8050
 #CMD ["tail","-f","/dev/null"]

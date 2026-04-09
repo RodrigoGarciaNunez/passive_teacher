@@ -2,8 +2,11 @@
 services:
   passive_teacher:
     build:
-      #context: contextPath
-      dockerfile: passive_teacher_app_dev.dockerfile
+      context: ${CONTEXT_PATH}  #IMPORTANTE
+      dockerfile: docker/passive_teacher_app_dev.dockerfile
+      args: 
+        - ENV_FILE=${ENV_FILE}
+        - APP_MAIN_DIR=${APP_MAIN_DIR}
     container_name: passive_teacher_app
     #command: ["executable", "arg"]
     ports:
@@ -11,7 +14,7 @@ services:
     volumes: 
       - ${APP_MAIN_DIR}:/app/passive_teacher
     #working_dir:
-    # command: tail
+    #command: tail
     #  -f /dev/null 
     command: ["python3", "-m", "controller.main"]
     depends_on:

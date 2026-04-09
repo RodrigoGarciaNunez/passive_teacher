@@ -4,6 +4,7 @@ from markupsafe import escape  # esto sirve para evitar inyecciones
 from werkzeug.middleware.proxy_fix import ProxyFix
 import requests
 import sys
+from functools import cache
 
 BASE_DIR = "files_container"
 
@@ -21,6 +22,7 @@ def welcome(name = None):
 def sign_in():
     pass
 
+@cache
 @app.route("/biblioteca")
 def biblioteca():
     structure = {}  #diccionario de la biblioteca
