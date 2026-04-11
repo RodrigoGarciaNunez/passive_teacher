@@ -1,18 +1,19 @@
 #dev
 services:
-  passive_teacher:
+  passive_teacher_app:
     build:
       context: ${CONTEXT_PATH}  #IMPORTANTE
       dockerfile: docker/passive_teacher_app_dev.dockerfile
       args: 
-        - ENV_FILE=${ENV_FILE}
+        - REQUIREMENTS_FILE=${REQUIREMENTS_FILE}
         - APP_MAIN_DIR=${APP_MAIN_DIR}
     container_name: passive_teacher_app
     #command: ["executable", "arg"]
     ports:
       - 8050:8080
     volumes: 
-      - ${APP_MAIN_DIR}:/app/passive_teacher
+      - ${APP_MAIN_DIR}/view:/app/passive_teacher/view
+      - ${APP_MAIN_DIR}/controller:/app/passive_teacher/controller
     #working_dir:
     #command: tail
     #  -f /dev/null 
@@ -36,6 +37,28 @@ services:
     # depends_on:
     #   - nginx_server
 
+  sender_container:
+    build:
+      context: ${CONTEXT_PATH}  #IMPORTANTE
+      dockerfile: docker/passive_teacher_sender_dev.dockerfile
+      args:
+        - REQUIREMENTS_FILE=${REQUIREMENTS_FILE}
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHANNEL_ID: ${TELEGRAM_CHANNEL_ID}
+    container_name: sender_container
+    ports:
+      - 8020:80
+    volumes:
+      - ${SENDER_SCRIPT_DIR}:/app/passive_teacher/scripts
+      - ${APP_MAIN_DIR}/model:/app/passive_teacher/model:ro
+    command: [bash, -c, "chmod  +x /app/passive_teacher/scripts/passive_teacher.sh; ./scripts/passive_teacher.sh"]
+  
+    networks:
+      - passive_teacher_network
+    depends_on:
+      - files_container
+
 
 
   nginx_server:
@@ -51,7 +74,7 @@ services:
     
     depends_on:
       - files_container
-      - passive_teacher
+      - passive_teacher_app
 
 
 
