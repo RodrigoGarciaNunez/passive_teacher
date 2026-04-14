@@ -15,18 +15,21 @@ class file_selector():
     def select_cheatsheet_http(self):
         topics = requests.get("http://files_container/").json()
         #print(type(topics))
-
+        
         topics= [topic["name"] for topic in topics 
-                    if topic["type"] == "directory"]
+                        if topic["type"] == "directory"]
+        
+        while True:       
+            dir_name = choice(topics)
             
-
-        dir_name = choice(topics)
+            dir_content = requests.get(f"http://files_container/{dir_name}").json()
         
-        dir_content = requests.get(f"http://files_container/{dir_name}").json()
+            files = [file["name"] for file in dir_content 
+                    if file["type"] == "file" and file["name"].endswith(".pdf")]
+            
+            if len(files) > 0:
+                break
         
-        files = [file["name"] for file in dir_content 
-                if file["type"] == "file" and file["name"].endswith(".pdf")]
-
         #print(files)
         #sys.stdout.flush()
         choosed_file = choice(files)
