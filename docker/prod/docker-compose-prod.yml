@@ -12,5 +12,6 @@ services:
     ports:
       - 8050:8080
     container_name: passive_teacher_app
+    
     command: ["python3", "-m", "controller.main"]
 
