@@ -1,0 +1,16 @@
+#dev
+services:
+  passive_teacher_app:
+    build:
+      context: ${CONTEXT_PATH}  #IMPORTANTE
+      dockerfile: docker/prod/passive_teacher_app_prod.dockerfile
+      args: 
+        - REQUIREMENTS_FILE=${REQUIREMENTS_FILE}
+        - APP_MAIN_DIR=${APP_MAIN_DIR}
+    environment:
+      - TELEGRAM_CHANNEL_LINK=${TELEGRAM_CHANNEL_LINK}
+    ports:
+      - 8050:8080
+    container_name: passive_teacher_app
+    command: ["python3", "-m", "controller.main"]
+

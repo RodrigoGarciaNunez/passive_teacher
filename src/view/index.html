@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Welcome to Passive_Teacher App!</title>
+<title>Welcome to StudyDrop!</title>
 <style>
 html { color-scheme: light dark; }
 body { width: 35em; margin: 0 auto;
@@ -9,17 +9,16 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 </style>
 </head>
 <body>
-<h1>Welcome to Passive_Teacher App!</h1>
-<p>What would you like to do?</p>
-<button type="button">Register for daily Cheatsheets!</button>
+<h1>Welcome to StudyDrop!</h1>
 
 <form action="{{ url_for('biblioteca') }}" method="get">
-    <button type="submit">Ir al PDF</button>
+    <button type="submit">Go to the LIBRARY</button>
 </form>
 
 
-<p>For online documentation and support please refer to
 
+<p> <a href="{{ TELEGRAM_CHANNEL_LINK }}"> Join </a> to the Telegram Channel for FREE daily CS notes!</p>
+<img src= "{{ url_for('static', filename='images/T_group_link.png') }}">
 
 <p><em>Thank you for using Passive Teacher.</em></p>
 </body>

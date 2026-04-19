@@ -4,19 +4,20 @@ from markupsafe import escape  # esto sirve para evitar inyecciones
 from werkzeug.middleware.proxy_fix import ProxyFix
 import requests
 import sys
+import os
 from functools import cache
 
 BASE_DIR = "files_container"
 
 #hola
-app = Flask(__name__, template_folder="../view")
+app = Flask(__name__, template_folder="../view", static_folder="../view/static")
 app.wsgi_app = ProxyFix(app.wsgi_app, x_prefix=1)
 
 @app.route("/")
 @app.route("/<name>")
 def welcome(name = None):
-    #name = request.args.get("")
-    return render_template('/index.html', user= name)
+    TELEGRAM_CHANNEL_LINK = os.getenv("TELEGRAM_CHANNEL_LINK")
+    return render_template('/index.html', user= name, TELEGRAM_CHANNEL_LINK = TELEGRAM_CHANNEL_LINK)
 
 @app.route("/sign-in")
 def sign_in():

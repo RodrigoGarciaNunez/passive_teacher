@@ -1,0 +1,11 @@
+CONTEXT_PATH = /home/rodrigo/Documents/proyectosPersonal/passive_teacher
+APP_MAIN_DIR = ${CONTEXT_PATH}/src
+SENDER_SCRIPT_DIR =  ${CONTEXT_PATH}/scripts
+REQUIREMENTS_FILE = ${CONTEXT_PATH}/requirements.txt
+CHEATSHEETS_DIR = ~/Documents/CHEATSHEETS/cheatsheets_dev 
+NGINX_CONFIG_FILES_CONTAINER = ${CONTEXT_PATH}/nginx/nginx_files.conf
+NGINX_REVERSE_PROXY_CONF = ${CONTEXT_PATH}/nginx/nginx_reverse_proxy.conf
+NGINX_REVERSE_PROXY_DEFAULT_CONF = ${CONTEXT_PATH}/nginx/nginx_reverse_proxy_default.conf
+TELEGRAM_BOT_TOKEN = 8602946478:AAHvX99CSgkQpt66dgB_TZVkd_ze90FRZbU
+TELEGRAM_CHANNEL_ID = 1003974559912
+TELEGRAM_CHANNEL_LINK = "https://t.me/+bHem1QbtHMViYWQx"
